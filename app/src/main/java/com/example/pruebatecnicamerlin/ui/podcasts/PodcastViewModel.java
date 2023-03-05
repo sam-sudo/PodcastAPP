@@ -6,14 +6,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.pruebatecnicamerlin.io.podcastApi.PodcastApiAdapter;
+import com.example.pruebatecnicamerlin.io.podcastApi.response.PodcastListResponse;
+import com.example.pruebatecnicamerlin.io.podcastApi.response.PodcastResponse;
+
 import java.util.ArrayList;
 
-public class PodcastViewModel extends ViewModel {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    private MutableLiveData<ArrayList<String>> listMutableLiveData;
+public class PodcastViewModel extends ViewModel implements Callback<PodcastListResponse> {
+
+    private MutableLiveData<ArrayList<PodcastResponse>> listMutableLiveData;
 
 
-    public LiveData<ArrayList<String>> getList() {
+    public LiveData<ArrayList<PodcastResponse>> getList() {
 
         if(listMutableLiveData == null){
             listMutableLiveData = new MutableLiveData<>();
@@ -24,23 +32,33 @@ public class PodcastViewModel extends ViewModel {
 
 
     public void initTempList(){
+
         //rellenar con los 100 podcasts
-        //todo llamar a la api RETROFIT
-        ArrayList list = new ArrayList();
-        list.add("1--");
-        list.add("2--");
-        list.add("3--");
-        listMutableLiveData.setValue(list);
+        Call<PodcastListResponse> call = PodcastApiAdapter.getPodcastApiService().getPodcasts();
+        call.enqueue(this);
+
+
     }
 
-    public void addString(String string){
-        if (listMutableLiveData.getValue() != null) {
-            ArrayList<String> movieList = new ArrayList<>(listMutableLiveData.getValue());
-            movieList.add(string);
-            listMutableLiveData.setValue(movieList);
+
+    @Override
+    public void onResponse(Call<PodcastListResponse> call, Response<PodcastListResponse> response) {
+        Log.d("TAG", "onResponse: ");
+        if(response.isSuccessful()){
+            PodcastListResponse podcastResponses = response.body();
+            Log.d("TAG", "onResponse: " + podcastResponses.toString());
+
+            ArrayList<PodcastResponse> list = new ArrayList<>();
+
+            list.addAll(podcastResponses.getFeed().getEntry());
+
+            listMutableLiveData.setValue(list);
+
         }
     }
 
+    @Override
+    public void onFailure(Call<PodcastListResponse> call, Throwable t) {
 
-
+    }
 }

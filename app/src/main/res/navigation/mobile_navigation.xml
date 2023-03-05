@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_podcasts">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_podcasts"
         android:name="com.example.pruebatecnicamerlin.ui.podcasts.PodcastsFragment"
         android:label="@string/menu_podcast"
         tools:layout="@layout/fragment_podcasts" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_favorite"
         android:name="com.example.pruebatecnicamerlin.ui.favoritePodcasts.FavoritesPodcastsFragment"
         android:label="@string/menu_favoritesPodcasts"
         tools:layout="@layout/fragment_favorites_podcasts" />

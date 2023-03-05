@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pruebatecnicamerlin.R;
 import com.example.pruebatecnicamerlin.databinding.FragmentPodcastsBinding;
+import com.example.pruebatecnicamerlin.io.podcastApi.response.PodcastResponse;
 import com.example.pruebatecnicamerlin.ui.podcasts.adapters.PodcastAdapter;
 import com.example.pruebatecnicamerlin.ui.podcasts.interfaces.PodcastInterface;
 
@@ -38,30 +39,36 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
         binding = FragmentPodcastsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        //RecyclerView podcastList
         RecyclerView mRecyclerView = binding.recyclerView;
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
-        mPodcastAdapter = new PodcastAdapter(new DiffUtil.ItemCallback<String>() {
+        mPodcastAdapter = new PodcastAdapter(new DiffUtil.ItemCallback<PodcastResponse>() {
+
+
             @Override
-            public boolean areItemsTheSame(@NonNull String oldItem, @NonNull String newItem) {
-                return oldItem.equals(newItem);
+            public boolean areItemsTheSame(@NonNull PodcastResponse oldItem, @NonNull PodcastResponse newItem) {
+                return false;
             }
 
             @Override
-            public boolean areContentsTheSame(@NonNull String oldItem, @NonNull String newItem) {
-                return oldItem.equals(newItem);
+            public boolean areContentsTheSame(@NonNull PodcastResponse oldItem, @NonNull PodcastResponse newItem) {
+                return false;
             }
         }, this);
         mRecyclerView.setAdapter(mPodcastAdapter);
 
         podcastViewModel = new ViewModelProvider(this).get(PodcastViewModel.class);
 
-        podcastViewModel.getList().observe(this, new Observer<ArrayList<String>>() {
+        podcastViewModel.getList().observe(this, new Observer<ArrayList<PodcastResponse>>() {
             @Override
             public void onChanged(ArrayList arrayList) {
                 Log.d("TAG", "onChanged: ");
                 mPodcastAdapter.submitList(arrayList);
             }
         });
+
+
+        //RecyclerViewGendersList
 
 
 

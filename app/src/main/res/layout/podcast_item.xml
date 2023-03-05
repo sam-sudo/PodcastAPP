@@ -4,30 +4,71 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/design_default_color_primary"
+    android:layout_margin="10dp"
     android:gravity="center">
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/imb_track"
+            android:background="@color/mainBackground"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+
+            >
+
+        </ImageButton>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_weight="3"
+        android:orientation="vertical"
+        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/txt_podcastItem"
+            android:id="@+id/txt_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/mainText"
+            android:textStyle="bold"
+            android:text="example text"/>
+
+        <TextView
+            android:id="@+id/txt_Author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainText"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            android:text="example text"/>
+
+        <TextView
+            android:id="@+id/txt_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainLightText"
+            android:textSize="8dp"
+            android:textStyle="bold"
             android:text="example text"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <Button
+    <!--<Button
         android:id="@+id/btn_img"
         android:layout_weight="1"
         android:layout_width="0dp"
+        android:text="btn"
+        android:backgroundTint="@color/mainButton"
         android:layout_height="wrap_content">
 
-    </Button>
+    </Button>-->
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>
