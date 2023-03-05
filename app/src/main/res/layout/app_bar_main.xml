@@ -11,12 +11,33 @@
         android:layout_height="wrap_content"
         android:theme="@style/Theme.PruebaTecnicaMerlin.AppBarOverlay">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.PruebaTecnicaMerlin.PopupOverlay" />
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_weight="5"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/Theme.PruebaTecnicaMerlin.PopupOverlay" />
+
+            <ImageView
+                android:id="@+id/imv_notification"
+                android:visibility="invisible"
+                android:layout_weight="1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:layout_gravity="right|top"
+                android:src="@drawable/time"
+                android:background="@color/mainBackground"
+                >
+
+            </ImageView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </com.google.android.material.appbar.AppBarLayout>
 

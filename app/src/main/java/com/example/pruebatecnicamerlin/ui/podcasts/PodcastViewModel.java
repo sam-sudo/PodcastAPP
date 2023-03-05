@@ -19,15 +19,23 @@ import retrofit2.Response;
 public class PodcastViewModel extends ViewModel implements Callback<PodcastListResponse> {
 
     private MutableLiveData<ArrayList<PodcastResponse>> listMutableLiveData;
-
+    private ArrayList<PodcastResponse> podcastResponseArrayList = new ArrayList<>();
+    ArrayList<String> genders = new ArrayList<>();
 
     public LiveData<ArrayList<PodcastResponse>> getList() {
-
+        //todo condicionar que haya pasado 24 horas
         if(listMutableLiveData == null){
             listMutableLiveData = new MutableLiveData<>();
             initTempList();
         }
         return listMutableLiveData;
+    }
+
+    public int getRealSize(){
+        return podcastResponseArrayList.size();
+    }
+    public int getGendersSize(){
+        return podcastResponseArrayList.size();
     }
 
 
@@ -48,17 +56,64 @@ public class PodcastViewModel extends ViewModel implements Callback<PodcastListR
             PodcastListResponse podcastResponses = response.body();
             Log.d("TAG", "onResponse: " + podcastResponses.toString());
 
-            ArrayList<PodcastResponse> list = new ArrayList<>();
 
-            list.addAll(podcastResponses.getFeed().getEntry());
-
-            listMutableLiveData.setValue(list);
+            podcastResponseArrayList = podcastResponses.getFeed().getEntry();
+            listMutableLiveData.setValue(podcastResponses.getFeed().getEntry());
 
         }
     }
 
     @Override
     public void onFailure(Call<PodcastListResponse> call, Throwable t) {
+
+    }
+
+
+    public ArrayList<String> getTypeOfGenders(ArrayList<PodcastResponse> arrayList){
+
+
+
+        for(PodcastResponse podcastResponse : arrayList){
+            String gender = podcastResponse.getCategory().getAttributes().getTerm();
+
+            if(genders.contains(gender)){
+                continue;
+            }
+
+            genders.add(gender);
+
+        }
+
+
+        return genders;
+    }
+
+    public void updateList(String param){
+
+        ArrayList<PodcastResponse> podcastResponseList = new ArrayList<>();
+
+        if(param.length() > 0){
+            for(PodcastResponse podcastResponse : podcastResponseArrayList){
+
+
+                String title = podcastResponse.getName().getLabel();
+                String author = podcastResponse.getArtist().getLabel();
+
+                Log.d("TAG", "getList: title " + title);
+                if(title.startsWith(param) || author.startsWith(param)){
+                    podcastResponseList.add(podcastResponse);
+                }
+
+
+
+            }
+
+            listMutableLiveData.setValue(podcastResponseList);
+        }else {
+            listMutableLiveData.setValue(podcastResponseArrayList);
+        }
+
+
 
     }
 }

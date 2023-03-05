@@ -1,10 +1,14 @@
 package com.example.pruebatecnicamerlin.ui.podcasts;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,6 +24,7 @@ import com.example.pruebatecnicamerlin.R;
 import com.example.pruebatecnicamerlin.databinding.FragmentPodcastsBinding;
 import com.example.pruebatecnicamerlin.io.podcastApi.response.PodcastResponse;
 import com.example.pruebatecnicamerlin.ui.podcasts.adapters.PodcastAdapter;
+import com.example.pruebatecnicamerlin.ui.podcasts.adapters.PodcastGenderAdapter;
 import com.example.pruebatecnicamerlin.ui.podcasts.interfaces.PodcastInterface;
 
 import java.util.ArrayList;
@@ -31,6 +36,7 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
     private PodcastAdapter mPodcastAdapter;
 
     private PodcastViewModel podcastViewModel;
+    PodcastGenderAdapter podcastGenderAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +47,9 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
 
         //RecyclerView podcastList
         RecyclerView mRecyclerView = binding.recyclerView;
+        //RecyclerView GendersList
+        RecyclerView listView = binding.recyclerViewGenders;
+
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
         mPodcastAdapter = new PodcastAdapter(new DiffUtil.ItemCallback<PodcastResponse>() {
 
@@ -59,17 +68,59 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
 
         podcastViewModel = new ViewModelProvider(this).get(PodcastViewModel.class);
 
-        podcastViewModel.getList().observe(this, new Observer<ArrayList<PodcastResponse>>() {
+
+        podcastGenderAdapter = new PodcastGenderAdapter(new DiffUtil.ItemCallback<String>() {
             @Override
-            public void onChanged(ArrayList arrayList) {
-                Log.d("TAG", "onChanged: ");
-                mPodcastAdapter.submitList(arrayList);
+            public boolean areItemsTheSame(@NonNull String oldItem, @NonNull String newItem) {
+                return false;
+            }
+
+            @Override
+            public boolean areContentsTheSame(@NonNull String oldItem, @NonNull String newItem) {
+                return false;
             }
         });
 
 
-        //RecyclerViewGendersList
 
+        podcastViewModel.getList().observe(this, new Observer<ArrayList<PodcastResponse>>() {
+
+            @Override
+            public void onChanged(ArrayList arrayList) {
+                mPodcastAdapter.submitList(arrayList);
+
+                ArrayList<String> uniqueGenderList = podcastViewModel.getTypeOfGenders(podcastViewModel.getList().getValue());
+                if( uniqueGenderList.size() != podcastViewModel.getGendersSize() ){
+
+
+                    podcastGenderAdapter.submitList(uniqueGenderList);
+                }
+
+            }
+        });
+
+
+
+        listView.setAdapter(podcastGenderAdapter);
+        //----
+
+        binding.iedtSearchTopPodcast.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.d("TAG", "onTextChanged: ");
+                podcastViewModel.updateList(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
 
         return root;

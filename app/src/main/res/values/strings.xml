@@ -9,4 +9,10 @@
 
     <string name="menu_podcast">Podcasts</string>
     <string name="menu_favoritesPodcasts">Favorites</string>
+
+    <string-array name="Entries">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+    </string-array>
 </resources>

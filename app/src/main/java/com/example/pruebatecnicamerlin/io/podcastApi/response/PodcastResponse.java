@@ -24,13 +24,17 @@ public class PodcastResponse {
     @SerializedName("im:releaseDate")
     private ReleaseDate releaseDate;
 
-    public PodcastResponse(Name name, ArrayList<Image> image, Summary summary, Id id, Artist artist, ReleaseDate releaseDate) {
+    @SerializedName("category")
+    private Category category;
+
+    public PodcastResponse(Name name, ArrayList<Image> image, Summary summary, Id id, Artist artist, ReleaseDate releaseDate, Category category) {
         this.name = name;
         this.image = image;
         this.summary = summary;
         this.id = id;
         this.artist = artist;
         this.releaseDate = releaseDate;
+        this.category = category;
     }
 
     public Name getName() {
@@ -90,7 +94,16 @@ public class PodcastResponse {
                 ", id=" + id +
                 ", artist=" + artist +
                 ", releaseDate=" + releaseDate +
+                ", category=" + category +
                 '}';
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     //------------internal classes---------------
@@ -307,5 +320,53 @@ public class PodcastResponse {
 
 
 
+    }
+
+    public class Category{
+        @SerializedName("attributes")
+        private Attributes attributes;
+
+        public Category(Attributes attributes) {
+            this.attributes = attributes;
+        }
+
+        public Attributes getAttributes() {
+            return attributes;
+        }
+
+        public void setAttributes(Attributes attributes) {
+            this.attributes = attributes;
+        }
+
+        @Override
+        public String toString() {
+            return "Category{" +
+                    "attributes=" + attributes +
+                    '}';
+        }
+
+        public class Attributes{
+            @SerializedName("term")
+            private String term;
+
+            public Attributes(String term) {
+                this.term = term;
+            }
+
+            public String getTerm() {
+                return term;
+            }
+
+            public void setTerm(String term) {
+                this.term = term;
+            }
+
+            @Override
+            public String toString() {
+                return "Attributes{" +
+                        "term='" + term + '\'' +
+                        '}';
+            }
+        }
     }
 }
