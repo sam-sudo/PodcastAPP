@@ -7,22 +7,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pruebatecnicamerlin.R;
 import com.example.pruebatecnicamerlin.databinding.FragmentPodcastsBinding;
 import com.example.pruebatecnicamerlin.io.podcastApi.response.PodcastResponse;
+import com.example.pruebatecnicamerlin.ui.podcastDetail.PodcastDetailFragment;
 import com.example.pruebatecnicamerlin.ui.podcasts.adapters.PodcastAdapter;
 import com.example.pruebatecnicamerlin.ui.podcasts.adapters.PodcastGenderAdapter;
 import com.example.pruebatecnicamerlin.ui.podcasts.interfaces.PodcastInterface;
@@ -51,6 +54,9 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
         RecyclerView listView = binding.recyclerViewGenders;
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
+
+
+
         mPodcastAdapter = new PodcastAdapter(new DiffUtil.ItemCallback<PodcastResponse>() {
 
 
@@ -64,7 +70,8 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
                 return false;
             }
         }, this);
-        mRecyclerView.setAdapter(mPodcastAdapter);
+
+
 
         podcastViewModel = new ViewModelProvider(this).get(PodcastViewModel.class);
 
@@ -81,8 +88,6 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
             }
         });
 
-
-
         podcastViewModel.getList().observe(this, new Observer<ArrayList<PodcastResponse>>() {
 
             @Override
@@ -98,11 +103,6 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
 
             }
         });
-
-
-
-        listView.setAdapter(podcastGenderAdapter);
-        //----
 
         binding.iedtSearchTopPodcast.addTextChangedListener(new TextWatcher() {
             @Override
@@ -123,6 +123,8 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
         });
 
 
+        mRecyclerView.setAdapter(mPodcastAdapter);
+        listView.setAdapter(podcastGenderAdapter);
         return root;
     }
 
@@ -136,7 +138,27 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
 
     @Override
     public void onClick(int position) {
-        Log.d("TAG", "onClick:   ---> " + position);
 
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        String id = podcastViewModel.getList().getValue().get(position).getId().getAttributes().getId();
+        String imgTrack = podcastViewModel.getList().getValue().get(position).getImage().get(1).getLabel();
+        String name = podcastViewModel.getList().getValue().get(position).getName().getLabel();
+        String author = podcastViewModel.getList().getValue().get(position).getArtist().getLabel();
+
+        //todo open datail
+        Log.d("TAG", "onClick:   ---> " + id);
+
+        NavController navController = Navigation.findNavController(this.getActivity(), R.id.nav_host_fragment_content_main);
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString("podcastId", id);
+        bundle.putString("imgTrack", imgTrack);
+        bundle.putString("name", name);
+        bundle.putString("author", author);
+        navController.navigate(R.id.nav_podcast_detail,bundle);
     }
 }

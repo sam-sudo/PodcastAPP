@@ -1,5 +1,6 @@
 package com.example.pruebatecnicamerlin.ui.podcasts.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,6 +59,7 @@ public class PodcastGenderAdapter extends ListAdapter<String,PodcastGenderAdapte
             // Define click listener for the ViewHolder's View
 
             tvGender = (TextView) view.findViewById(R.id.tv_Gender);
+
         }
 
 

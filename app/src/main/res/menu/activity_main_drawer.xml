@@ -12,5 +12,9 @@
             android:id="@+id/nav_favorite"
             android:icon="@drawable/ic_favorite"
             android:title="@string/menu_favoritesPodcasts" />
+        <item
+            android:id="@+id/nav_podcast_detail"
+            android:icon="@drawable/ic_favorite"
+            android:title="@string/menu_favoritesPodcasts" />
     </group>
 </menu>

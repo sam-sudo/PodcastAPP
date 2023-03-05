@@ -4,7 +4,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -40,10 +39,11 @@ public class PodcastAdapter  extends ListAdapter<PodcastResponse,PodcastAdapter.
     }
 
 
-    class PodcastViewHolder extends RecyclerView.ViewHolder {
+    class PodcastViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvTitle;
         private TextView tvAuthor;
         private TextView tvDate;
+        private TextView tvCapsCount;
         private ImageButton imageTrack;
 
         public PodcastViewHolder(View view) {
@@ -53,14 +53,16 @@ public class PodcastAdapter  extends ListAdapter<PodcastResponse,PodcastAdapter.
             tvTitle = (TextView) view.findViewById(R.id.txt_title);
             tvAuthor = (TextView) view.findViewById(R.id.txt_Author);
             tvDate = (TextView) view.findViewById(R.id.txt_date);
+            tvCapsCount = (TextView) view.findViewById(R.id.tvCapsCount);
 
             imageTrack = (ImageButton) view.findViewById(R.id.imb_track);
 
+            view.setOnClickListener(this);
             imageTrack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     podcastInterface.onClick(getBindingAdapterPosition());
-                    Log.d("TAG", "onClick: -> " +getBindingAdapterPosition());
+                    Log.d("TAG", "img track onClick: -> " +getBindingAdapterPosition());
                 }
             });
 
@@ -71,6 +73,8 @@ public class PodcastAdapter  extends ListAdapter<PodcastResponse,PodcastAdapter.
             tvTitle.setText(podcastResponse.getName().getLabel());
             tvAuthor.setText(podcastResponse.getArtist().getLabel());
             tvDate.setText(podcastResponse.getReleaseDate().getAttributes().getLabel());
+            //tvCapsCount.setText(podcastResponse.getReleaseDate().getAttributes().getLabel());
+
             String urlImg = podcastResponse.getImage().get(2).getLabel();
             if(urlImg == null){
                 urlImg = "https://podcastindex.org/api/images/podserve.png";
@@ -86,8 +90,11 @@ public class PodcastAdapter  extends ListAdapter<PodcastResponse,PodcastAdapter.
         }
 
 
+        @Override
+        public void onClick(View view) {
+            podcastInterface.onItemClick(getBindingAdapterPosition());
 
-
+        }
     }
 
 

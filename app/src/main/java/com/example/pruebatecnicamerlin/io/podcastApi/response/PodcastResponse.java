@@ -220,7 +220,7 @@ public class PodcastResponse {
                     '}';
         }
 
-        private class Attributes{
+        public class Attributes{
             @SerializedName("im:id")
             private String id;
 

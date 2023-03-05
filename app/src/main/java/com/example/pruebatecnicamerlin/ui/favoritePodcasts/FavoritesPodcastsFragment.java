@@ -17,7 +17,7 @@ public class FavoritesPodcastsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        FavoritePodcastViewModel galleryViewModel =
+        FavoritePodcastViewModel favoritePodcastViewModel =
                 new ViewModelProvider(this).get(FavoritePodcastViewModel.class);
 
         binding = FragmentFavoritesPodcastsBinding.inflate(inflater, container, false);
