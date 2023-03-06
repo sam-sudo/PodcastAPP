@@ -51,11 +51,9 @@ public class PodcastViewModel extends ViewModel implements Callback<PodcastListR
 
     @Override
     public void onResponse(Call<PodcastListResponse> call, Response<PodcastListResponse> response) {
-        Log.d("TAG", "onResponse: ");
+
         if(response.isSuccessful()){
             PodcastListResponse podcastResponses = response.body();
-            Log.d("TAG", "onResponse: " + podcastResponses.toString());
-
 
             podcastResponseArrayList = podcastResponses.getFeed().getEntry();
             listMutableLiveData.setValue(podcastResponses.getFeed().getEntry());
@@ -100,7 +98,33 @@ public class PodcastViewModel extends ViewModel implements Callback<PodcastListR
                 String author = podcastResponse.getArtist().getLabel();
 
                 Log.d("TAG", "getList: title " + title);
-                if(title.startsWith(param) || author.startsWith(param)){
+                if(title.toUpperCase().startsWith(param.toUpperCase()) || author.toUpperCase().startsWith(param.toUpperCase())){
+                    podcastResponseList.add(podcastResponse);
+                }
+
+
+
+            }
+
+            listMutableLiveData.setValue(podcastResponseList);
+        }else {
+            listMutableLiveData.setValue(podcastResponseArrayList);
+        }
+
+
+
+    }
+    public void updateListByGender(String param){
+
+        ArrayList<PodcastResponse> podcastResponseList = new ArrayList<>();
+
+        if(param.length() > 0){
+            for(PodcastResponse podcastResponse : podcastResponseArrayList){
+
+
+                String gender = podcastResponse.getCategory().getAttributes().getTerm();
+
+                if(gender.equalsIgnoreCase(param)){
                     podcastResponseList.add(podcastResponse);
                 }
 

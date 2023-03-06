@@ -28,11 +28,12 @@ import com.example.pruebatecnicamerlin.io.podcastApi.response.PodcastResponse;
 import com.example.pruebatecnicamerlin.ui.podcastDetail.PodcastDetailFragment;
 import com.example.pruebatecnicamerlin.ui.podcasts.adapters.PodcastAdapter;
 import com.example.pruebatecnicamerlin.ui.podcasts.adapters.PodcastGenderAdapter;
+import com.example.pruebatecnicamerlin.ui.podcasts.interfaces.PodcastGenderInterface;
 import com.example.pruebatecnicamerlin.ui.podcasts.interfaces.PodcastInterface;
 
 import java.util.ArrayList;
 
-public class PodcastsFragment extends Fragment implements PodcastInterface {
+public class PodcastsFragment extends Fragment implements PodcastInterface, PodcastGenderInterface {
 
     private FragmentPodcastsBinding binding;
 
@@ -40,6 +41,7 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
 
     private PodcastViewModel podcastViewModel;
     PodcastGenderAdapter podcastGenderAdapter;
+    String imgTrack ;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,13 +50,14 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
         binding = FragmentPodcastsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        podcastViewModel = new ViewModelProvider(this).get(PodcastViewModel.class);
+
         //RecyclerView podcastList
         RecyclerView mRecyclerView = binding.recyclerView;
         //RecyclerView GendersList
         RecyclerView listView = binding.recyclerViewGenders;
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
-
 
 
         mPodcastAdapter = new PodcastAdapter(new DiffUtil.ItemCallback<PodcastResponse>() {
@@ -71,11 +74,6 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
             }
         }, this);
 
-
-
-        podcastViewModel = new ViewModelProvider(this).get(PodcastViewModel.class);
-
-
         podcastGenderAdapter = new PodcastGenderAdapter(new DiffUtil.ItemCallback<String>() {
             @Override
             public boolean areItemsTheSame(@NonNull String oldItem, @NonNull String newItem) {
@@ -86,7 +84,7 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
             public boolean areContentsTheSame(@NonNull String oldItem, @NonNull String newItem) {
                 return false;
             }
-        });
+        },this);
 
         podcastViewModel.getList().observe(this, new Observer<ArrayList<PodcastResponse>>() {
 
@@ -97,8 +95,9 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
                 ArrayList<String> uniqueGenderList = podcastViewModel.getTypeOfGenders(podcastViewModel.getList().getValue());
                 if( uniqueGenderList.size() != podcastViewModel.getGendersSize() ){
 
-
                     podcastGenderAdapter.submitList(uniqueGenderList);
+
+
                 }
 
             }
@@ -138,18 +137,21 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
 
     @Override
     public void onClick(int position) {
-
+        navigateToDetail(position);
     }
 
     @Override
     public void onItemClick(int position) {
+        navigateToDetail(position);
+    }
+
+    private void navigateToDetail(int position) {
         String id = podcastViewModel.getList().getValue().get(position).getId().getAttributes().getId();
-        String imgTrack = podcastViewModel.getList().getValue().get(position).getImage().get(1).getLabel();
         String name = podcastViewModel.getList().getValue().get(position).getName().getLabel();
         String author = podcastViewModel.getList().getValue().get(position).getArtist().getLabel();
-
+        imgTrack = podcastViewModel.getList().getValue().get(position).getImage().get(2).getLabel();
         //todo open datail
-        Log.d("TAG", "onClick:   ---> " + id);
+        Log.d("TAG_navigate", "onClick:   ---> " + id);
 
         NavController navController = Navigation.findNavController(this.getActivity(), R.id.nav_host_fragment_content_main);
 
@@ -160,5 +162,12 @@ public class PodcastsFragment extends Fragment implements PodcastInterface {
         bundle.putString("name", name);
         bundle.putString("author", author);
         navController.navigate(R.id.nav_podcast_detail,bundle);
+    }
+
+    @Override
+    public void onGenderClick(String gender) {
+        Log.d("TAG", "onClick gender:   ---> " + gender);
+        podcastViewModel.updateListByGender(gender);
+
     }
 }

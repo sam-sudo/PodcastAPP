@@ -10,7 +10,9 @@
 
     //Main colors
     <color name="mainBackground">#1E1E1E</color>
+    <color name="mainBackgroundDark">#1E0B2C</color>
     <color name="mainButton">#8F00FF</color>
+    <color name="mainButtonDark">#6611A8</color>
     <color name="mainBackgroundToolBar">#1E1E1E</color>
     <color name="mainText">#FFFFFF</color>
     <color name="mainLightText">#B6B6B6</color>

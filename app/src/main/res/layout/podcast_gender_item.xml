@@ -10,6 +10,7 @@
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_itemGender"
         android:layout_weight="3"
         android:orientation="vertical"
         android:gravity="center"
@@ -18,8 +19,11 @@
 
         <TextView
             android:id="@+id/tv_Gender"
-            android:layout_width="130dp"
+            android:layout_width="60dp"
             android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:maxLines="2"
             android:gravity="center"
             android:textColor="@color/mainLightText"
             android:textStyle="bold"

@@ -6,4 +6,6 @@ public interface PodcastInterface {
 
     void onItemClick(int position);
 
+
+
 }

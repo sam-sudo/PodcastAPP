@@ -44,7 +44,6 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
 
     class PodcastViewHolder extends RecyclerView.ViewHolder  {
         private TextView tvTitle;
-        private TextView tvAuthor;
         private TextView releaseDate;
         private TextView tvTimeDuration;
         private ImageButton btnPlayTrack;
@@ -56,7 +55,6 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
             // Define click listener for the ViewHolder's View
 
             tvTitle = (TextView) view.findViewById(R.id.txt_title);
-            tvAuthor = (TextView) view.findViewById(R.id.txt_Author);
             releaseDate = (TextView) view.findViewById(R.id.tv_releaseDate);
             tvTimeDuration = (TextView) view.findViewById(R.id.tvTimeDuration);
             btnPlayTrack = view.findViewById(R.id.btn_playTrack);
@@ -69,9 +67,7 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
 
         public void bind(PodcastDetailResponse podcastDetailResponse) {
             tvTitle.setText(podcastDetailResponse.getTrackName());
-            tvAuthor.setText(podcastDetailResponse.getArtistName());
-            releaseDate.setText(podcastDetailResponse.getReleaseDate());
-
+            releaseDate.setText(podcastDetailResponse.getReleaseDate().split("T")[0]);
 
 
             try {

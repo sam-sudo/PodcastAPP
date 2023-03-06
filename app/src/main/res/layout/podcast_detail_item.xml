@@ -5,13 +5,13 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_margin="10dp"
-    android:gravity="center">
+    android:weightSum="10"
+    >
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_weight="0"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageButton
             android:id="@+id/btn_playTrack"
@@ -28,7 +28,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_weight="3"
+        android:layout_weight="9"
         android:orientation="vertical"
         android:gravity="center"
         android:layout_width="0dp"
@@ -39,31 +39,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/mainText"
+            android:maxLines="2"
+            android:textSize="12dp"
             android:textStyle="bold"
             android:text="example text"/>
 
-        <TextView
-            android:id="@+id/txt_Author"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/mainText"
-            android:textSize="10dp"
-            android:textStyle="bold"
-            android:text="example text"/>
 
         <TextView
             android:id="@+id/tv_releaseDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/mainLightText"
-            android:textSize="8dp"
+            android:textSize="10dp"
             android:textStyle="bold"
             android:text="example text"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
-
+        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:gravity="center"
         android:layout_height="match_parent">

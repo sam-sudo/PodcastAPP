@@ -3,6 +3,7 @@ package com.example.pruebatecnicamerlin.io.podcastApi.response;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PodcastResponse {
 
@@ -35,6 +36,19 @@ public class PodcastResponse {
         this.artist = artist;
         this.releaseDate = releaseDate;
         this.category = category;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PodcastResponse that = (PodcastResponse) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public Name getName() {
