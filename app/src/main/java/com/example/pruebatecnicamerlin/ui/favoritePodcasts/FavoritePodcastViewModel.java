@@ -26,7 +26,6 @@ public class FavoritePodcastViewModel extends ViewModel implements Callback<Podc
     private MutableLiveData<ArrayList<PodcastResponse>> listMutableLiveData;
     private ArrayList<PodcastResponse> podcastRealArrayList = new ArrayList<>();
 
-
     private SharedPreferences sharedPreferences;
 
     private Context context;
@@ -69,8 +68,6 @@ public class FavoritePodcastViewModel extends ViewModel implements Callback<Podc
 
         if(response.isSuccessful()){
             PodcastListResponse podcastResponses = response.body();
-
-
 
             ArrayList<PodcastResponse> favoritePodcast = getFavoriteArrayList(podcastResponses.getFeed().getEntry());
 
@@ -130,7 +127,6 @@ public class FavoritePodcastViewModel extends ViewModel implements Callback<Podc
         }*/
 
         if(!listMutableLiveData.getValue().equals(favoriteArrayList)){
-            Log.d("TAG_navigate", "refreshFavoriteArrayList: not equal");
             this.listMutableLiveData.setValue(favoriteArrayList);
 
         }
@@ -140,13 +136,11 @@ public class FavoritePodcastViewModel extends ViewModel implements Callback<Podc
     }
 
     public boolean isPodcastFavorite(String id) {
-        Log.d("TAG", "loaData: ");
 
 
         sharedPreferences = context.getSharedPreferences("favorites", MODE_PRIVATE);
 
         String existId = sharedPreferences.getString(""+id, null);
-        Log.d("TAG", "loadData: shared id --> " + existId);
 
         if( existId == null  ){
             return false;
@@ -154,7 +148,6 @@ public class FavoritePodcastViewModel extends ViewModel implements Callback<Podc
         }
         return true;
     }
-
 
 
 }

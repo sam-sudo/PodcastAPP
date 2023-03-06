@@ -7,6 +7,5 @@ import com.example.pruebatecnicamerlin.io.podcastApi.response.podcastDetail.Podc
 public interface PodcastDetailInterface {
 
     void getCountTracks(int countTracks);
-    void startPauseTrack(String url, ImageButton imageButton);
 
 }

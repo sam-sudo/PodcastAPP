@@ -45,12 +45,13 @@ public class PodcastDetailFragment extends Fragment implements PodcastDetailInte
 
     private PodcastDetailAdapter podcastDetailAdapter;
 
-    private MediaPlayer mp;
+
     private String trackCount;
 
     private boolean isPodcastFavorite;
 
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -152,47 +153,12 @@ public class PodcastDetailFragment extends Fragment implements PodcastDetailInte
         super.onDestroy();
         //Para que no se siga reproduciendo cuando vamos atras
         //todo si queremos seguir reproduciendod espues de cerrar la vista quitar este código
-        if(mp != null){
+        /*if(mp != null){
             mp.release();
-        }
+        }*/
     }
 
-    @Override
-    public void startPauseTrack(String url, ImageButton imageButton) {
 
-        if(url != null){
-
-            Uri uri = Uri.parse(url);
-
-            if(mp == null){
-                mp = MediaPlayer.create(this.getContext(), uri);
-            }
-
-            if(!mp.isPlaying()){
-
-                Picasso.get()
-                        .load(R.drawable.ic_pause)
-                        .into(imageButton);
-
-                Log.d("TAG", "onClick: start mp");
-                mp.start();
-
-            }else {
-                Log.d("TAG", "onClick: pause mp");
-                Picasso.get()
-                        .load(R.drawable.play)
-                        .into(imageButton);
-
-                mp.pause();
-            }
-
-        }else {
-            Toast.makeText(this.getContext(), "Ups! No track available...", Toast.LENGTH_SHORT).show();
-        }
-
-
-
-    }
 
 
     private void loadData(String id) {

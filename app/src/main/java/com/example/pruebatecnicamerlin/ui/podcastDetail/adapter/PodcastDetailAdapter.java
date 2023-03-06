@@ -22,6 +22,9 @@ import com.example.pruebatecnicamerlin.util.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, PodcastDetailAdapter.PodcastViewHolder>  {
+    private int currentPosition = -1;
+    private MediaPlayer mp;
+    private int lastPosition = -1;
 
     PodcastDetailInterface podcastDetailInterface;
     public PodcastDetailAdapter(@NonNull DiffUtil.ItemCallback<PodcastDetailResponse> diffCallback, PodcastDetailInterface podcastDetailInterface) {
@@ -39,6 +42,14 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
     public void onBindViewHolder(@NonNull PodcastViewHolder holder, int position) {
         PodcastDetailResponse item = getItem(position);
         holder.bind(item);
+
+        holder.btnPlayTrack.setTag(1);
+
+        if(currentPosition == position ){
+            holder.btnPlayTrack.setImageResource(R.drawable.ic_pause);
+        } else {
+            holder.btnPlayTrack.setImageResource(R.drawable.play);
+        }
     }
 
 
@@ -59,6 +70,61 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
             tvTimeDuration = (TextView) view.findViewById(R.id.tvTimeDuration);
             btnPlayTrack = view.findViewById(R.id.btn_playTrack);
 
+
+
+
+        }
+
+        public void startPauseTrack(String url, int position) {
+
+            if(url != null){
+
+                Uri uri = Uri.parse(url);
+
+
+                if(mp == null){
+                    mp = new MediaPlayer();
+
+
+                }
+
+
+                if(!mp.isPlaying()){
+
+                /*Picasso.get()
+                        .load(R.drawable.ic_pause)
+                        .into(imageButton);*/
+
+                    Log.d("TAG", "onClick: start mp");
+
+                    mp = MediaPlayer.create(btnPlayTrack.getContext(), uri);
+
+                    mp.start();
+
+                }else {
+                    Log.d("TAG", "onClick: pause mp");
+                /*Picasso.get()
+                        .load(R.drawable.play)
+                        .into(imageButton);*/
+
+                    if(lastPosition != position && lastPosition != -1){
+                        mp.release();
+                        mp = MediaPlayer.create(btnPlayTrack.getContext(), uri);
+                        mp.start();
+                    }else {
+                        mp.pause();
+                    }
+
+
+
+
+                }
+
+                lastPosition = position;
+
+            }else {
+                Toast.makeText(btnPlayTrack.getContext(), "Ups! No track available...", Toast.LENGTH_SHORT).show();
+            }
 
 
 
@@ -93,15 +159,41 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
 
            }
 
-
            btnPlayTrack.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
-                   podcastDetailInterface.startPauseTrack(podcastDetailResponse.getEpisodeUrl(), btnPlayTrack);
+                   Log.d("TAG", "onClick: " + podcastDetailResponse.getEpisodeUrl());
+                   Log.d("TAG", "trackname: " + podcastDetailResponse.getTrackName());
+
+
+
+
+                   int PlayStopButtonState = (int) btnPlayTrack.getTag();
+
+                   int previousPosition = currentPosition;
+                   if (PlayStopButtonState == 1) {
+                       currentPosition = getBindingAdapterPosition();
+                       btnPlayTrack.setImageResource(R.drawable.ic_pause);
+                       btnPlayTrack.setTag(2);
+                   } else {
+                       currentPosition = -1;
+                       btnPlayTrack.setImageResource(R.drawable.play);
+                       btnPlayTrack.setTag(1);
+                   }
+                   if (previousPosition != -1) {
+                       notifyItemChanged(previousPosition);
+                   }
+
+
+                   startPauseTrack(podcastDetailResponse.getEpisodeUrl(), getBindingAdapterPosition());
                }
            });
+
+
+
            
 
         }
     }
+
 }

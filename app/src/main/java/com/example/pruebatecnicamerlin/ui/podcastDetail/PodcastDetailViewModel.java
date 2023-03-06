@@ -46,6 +46,10 @@ public class PodcastDetailViewModel extends ViewModel implements Callback<Podcas
 
     }
 
+    public ArrayList<PodcastDetailResponse> getRealDetailList(){
+        return podcastResponseArrayList;
+    }
+
     @Override
     public void onResponse(Call<PodcastDetailListResponse> call, Response<PodcastDetailListResponse> response) {
         Log.d("TAG", "onResponse: ");

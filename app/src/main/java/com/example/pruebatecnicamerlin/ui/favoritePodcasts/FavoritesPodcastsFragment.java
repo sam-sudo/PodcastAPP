@@ -46,8 +46,7 @@ public class FavoritesPodcastsFragment extends Fragment implements PodcastInterf
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        FavoritePodcastViewModel favoritePodcastViewModel =
-                new ViewModelProvider(this).get(FavoritePodcastViewModel.class);
+        Log.d("bug_fav", "onCreateView: ");
 
         binding = FragmentFavoritesPodcastsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
