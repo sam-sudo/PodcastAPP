@@ -1,5 +1,6 @@
 package com.example.pruebatecnicamerlin.ui.podcastDetail.adapter;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
@@ -21,9 +22,11 @@ import com.example.pruebatecnicamerlin.ui.podcastDetail.interfaces.PodcastDetail
 import com.example.pruebatecnicamerlin.util.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+
 public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, PodcastDetailAdapter.PodcastViewHolder>  {
     private int currentPosition = -1;
-    private MediaPlayer mp;
+    private MediaPlayer  mp ;
     private int lastPosition = -1;
 
     PodcastDetailInterface podcastDetailInterface;
@@ -35,6 +38,7 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
     @NonNull
     @Override
     public PodcastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         return new PodcastViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.podcast_detail_item, parent,false));
     }
 
@@ -75,7 +79,7 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
 
         }
 
-        public void startPauseTrack(String url, int position) {
+        public void startPauseTrack(String url, int position, ImageButton btnPlayTrack) {
 
             if(url != null){
 
@@ -84,8 +88,7 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
 
                 if(mp == null){
                     mp = new MediaPlayer();
-
-
+                    mp = MediaPlayer.create(btnPlayTrack.getContext(), uri);
                 }
 
 
@@ -97,7 +100,7 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
 
                     Log.d("TAG", "onClick: start mp");
 
-                    mp = MediaPlayer.create(btnPlayTrack.getContext(), uri);
+
 
                     mp.start();
 
@@ -171,21 +174,23 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
                    int PlayStopButtonState = (int) btnPlayTrack.getTag();
 
                    int previousPosition = currentPosition;
-                   if (PlayStopButtonState == 1) {
-                       currentPosition = getBindingAdapterPosition();
-                       btnPlayTrack.setImageResource(R.drawable.ic_pause);
-                       btnPlayTrack.setTag(2);
-                   } else {
-                       currentPosition = -1;
-                       btnPlayTrack.setImageResource(R.drawable.play);
-                       btnPlayTrack.setTag(1);
-                   }
-                   if (previousPosition != -1) {
-                       notifyItemChanged(previousPosition);
-                   }
+
+                       if (PlayStopButtonState == 1) {
+                           currentPosition = getBindingAdapterPosition();
+                           btnPlayTrack.setImageResource(R.drawable.ic_pause);
+                           btnPlayTrack.setTag(2);
+                       } else {
+                           currentPosition = -1;
+                           btnPlayTrack.setImageResource(R.drawable.play);
+                           btnPlayTrack.setTag(1);
+                       }
+                       if (previousPosition != -1) {
+                           notifyItemChanged(previousPosition);
+                       }
 
 
-                   startPauseTrack(podcastDetailResponse.getEpisodeUrl(), getBindingAdapterPosition());
+                    startPauseTrack(podcastDetailResponse.getEpisodeUrl(), getBindingAdapterPosition(),btnPlayTrack);
+                   //startPauseTrack(podcastDetailResponse.getEpisodeUrl(), getBindingAdapterPosition(),mp);
                }
            });
 

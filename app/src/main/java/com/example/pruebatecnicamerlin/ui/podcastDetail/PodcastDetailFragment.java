@@ -33,6 +33,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -157,8 +158,6 @@ public class PodcastDetailFragment extends Fragment implements PodcastDetailInte
             mp.release();
         }*/
     }
-
-
 
 
     private void loadData(String id) {

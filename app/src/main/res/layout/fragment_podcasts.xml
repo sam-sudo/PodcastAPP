@@ -56,17 +56,27 @@
             android:textSize="20dp"
             />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/iedt_searchTopPodcast"
-            android:hint="Search"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textColorHint="@color/mainLightText"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_weight="2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:boxStrokeColor="@color/mainButton"
+            android:textColor="@color/white"
+            android:hint="search"
+            app:hintTextColor="@color/mainLightText"
+            app:boxBackgroundColor="@color/mainBackground"
+            app:boxStrokeWidth="2dp"
+            android:layout_gravity="center">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/iedt_searchTopPodcast"
 
-        </com.google.android.material.textfield.TextInputEditText>
+                android:textColor="@color/white"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

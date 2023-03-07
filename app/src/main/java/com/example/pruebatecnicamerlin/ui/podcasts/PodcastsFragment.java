@@ -136,6 +136,14 @@ public class PodcastsFragment extends Fragment implements PodcastInterface, Podc
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(podcastViewModel.getList().getValue() != null && podcastViewModel.getList().getValue().size() <= 0){
+            binding.iedtSearchTopPodcast.setText("");
+        }
+    }
+
+    @Override
     public void onClick(int position) {
         navigateToDetail(position);
     }
