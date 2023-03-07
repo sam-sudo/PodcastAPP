@@ -20,18 +20,21 @@ import com.example.pruebatecnicamerlin.R;
 import com.example.pruebatecnicamerlin.io.podcastApi.response.podcastDetail.PodcastDetailResponse;
 import com.example.pruebatecnicamerlin.ui.podcastDetail.interfaces.PodcastDetailInterface;
 import com.example.pruebatecnicamerlin.util.CircleTransform;
+import com.example.pruebatecnicamerlin.util.MediaPlayerService;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
 public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, PodcastDetailAdapter.PodcastViewHolder>  {
     private int currentPosition = -1;
-    private MediaPlayer  mp ;
+    private MediaPlayer  mp = new MediaPlayerService().getMp();;
     private int lastPosition = -1;
+    private boolean isTrackPaused = false;
 
     PodcastDetailInterface podcastDetailInterface;
     public PodcastDetailAdapter(@NonNull DiffUtil.ItemCallback<PodcastDetailResponse> diffCallback, PodcastDetailInterface podcastDetailInterface) {
         super(diffCallback);
+
         this.podcastDetailInterface = podcastDetailInterface;
     }
 
@@ -54,6 +57,11 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
         } else {
             holder.btnPlayTrack.setImageResource(R.drawable.play);
         }
+
+
+
+
+
     }
 
 
@@ -88,7 +96,7 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
 
                 if(mp == null){
                     mp = new MediaPlayer();
-                    mp = MediaPlayer.create(btnPlayTrack.getContext(), uri);
+
                 }
 
 
@@ -101,8 +109,16 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
                     Log.d("TAG", "onClick: start mp");
 
 
+                    if(lastPosition != position && lastPosition != -1 || !isTrackPaused){
+                        mp.release();
+                        mp = MediaPlayer.create(btnPlayTrack.getContext(), uri);
+                        mp.start();
+                        isTrackPaused = false;
 
-                    mp.start();
+                    }else {
+                        mp.start();
+                    }
+
 
                 }else {
                     Log.d("TAG", "onClick: pause mp");
@@ -114,8 +130,10 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
                         mp.release();
                         mp = MediaPlayer.create(btnPlayTrack.getContext(), uri);
                         mp.start();
+                        isTrackPaused = false;
                     }else {
                         mp.pause();
+                        isTrackPaused = true;
                     }
 
 
