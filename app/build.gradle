@@ -80,4 +80,12 @@ dependencies {
     // optional - Test helpers for Lifecycle runtime
     testImplementation "androidx.lifecycle:lifecycle-runtime-testing:$lifecycle_version"
 
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+
 }

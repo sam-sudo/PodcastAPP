@@ -8,4 +8,6 @@ public interface PodcastDetailInterface {
 
     void getCountTracks(int countTracks);
 
+    void mediaPlayerTrackHandler(String url, int position, ImageButton btnPlayTrack);
+
 }

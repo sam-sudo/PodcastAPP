@@ -1,6 +1,5 @@
 package com.example.pruebatecnicamerlin.ui.podcastDetail.adapter;
 
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
@@ -19,17 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pruebatecnicamerlin.R;
 import com.example.pruebatecnicamerlin.io.podcastApi.response.podcastDetail.PodcastDetailResponse;
 import com.example.pruebatecnicamerlin.ui.podcastDetail.interfaces.PodcastDetailInterface;
-import com.example.pruebatecnicamerlin.util.CircleTransform;
-import com.example.pruebatecnicamerlin.util.MediaPlayerService;
-import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
 
 public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, PodcastDetailAdapter.PodcastViewHolder>  {
     private int currentPosition = -1;
-    private MediaPlayer  mp = new MediaPlayerService().getMp();;
-    private int lastPosition = -1;
-    private boolean isTrackPaused = false;
 
     PodcastDetailInterface podcastDetailInterface;
     public PodcastDetailAdapter(@NonNull DiffUtil.ItemCallback<PodcastDetailResponse> diffCallback, PodcastDetailInterface podcastDetailInterface) {
@@ -87,65 +78,9 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
 
         }
 
-        public void startPauseTrack(String url, int position, ImageButton btnPlayTrack) {
-
-            if(url != null){
-
-                Uri uri = Uri.parse(url);
+        public void mediaPlayerTrackHandler(String url, int position, ImageButton btnPlayTrack) {
 
 
-                if(mp == null){
-                    mp = new MediaPlayer();
-
-                }
-
-
-                if(!mp.isPlaying()){
-
-                /*Picasso.get()
-                        .load(R.drawable.ic_pause)
-                        .into(imageButton);*/
-
-                    Log.d("TAG", "onClick: start mp");
-
-
-                    if(lastPosition != position && lastPosition != -1 || !isTrackPaused){
-                        mp.release();
-                        mp = MediaPlayer.create(btnPlayTrack.getContext(), uri);
-                        mp.start();
-                        isTrackPaused = false;
-
-                    }else {
-                        mp.start();
-                    }
-
-
-                }else {
-                    Log.d("TAG", "onClick: pause mp");
-                /*Picasso.get()
-                        .load(R.drawable.play)
-                        .into(imageButton);*/
-
-                    if(lastPosition != position && lastPosition != -1){
-                        mp.release();
-                        mp = MediaPlayer.create(btnPlayTrack.getContext(), uri);
-                        mp.start();
-                        isTrackPaused = false;
-                    }else {
-                        mp.pause();
-                        isTrackPaused = true;
-                    }
-
-
-
-
-                }
-
-                lastPosition = position;
-
-            }else {
-                Toast.makeText(btnPlayTrack.getContext(), "Ups! No track available...", Toast.LENGTH_SHORT).show();
-            }
 
 
 
@@ -207,8 +142,8 @@ public class PodcastDetailAdapter extends ListAdapter<PodcastDetailResponse, Pod
                        }
 
 
-                    startPauseTrack(podcastDetailResponse.getEpisodeUrl(), getBindingAdapterPosition(),btnPlayTrack);
-                   //startPauseTrack(podcastDetailResponse.getEpisodeUrl(), getBindingAdapterPosition(),mp);
+                    //mediaPlayerTrackHandler(podcastDetailResponse.getEpisodeUrl(), getBindingAdapterPosition(),btnPlayTrack);
+                    podcastDetailInterface.mediaPlayerTrackHandler(podcastDetailResponse.getEpisodeUrl(), getBindingAdapterPosition(),btnPlayTrack);
                }
            });
 

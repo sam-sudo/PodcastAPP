@@ -29,6 +29,7 @@ import com.example.pruebatecnicamerlin.io.podcastApi.response.podcastDetail.Podc
 import com.example.pruebatecnicamerlin.ui.podcastDetail.adapter.PodcastDetailAdapter;
 import com.example.pruebatecnicamerlin.ui.podcastDetail.interfaces.PodcastDetailInterface;
 import com.example.pruebatecnicamerlin.util.CircleTransform;
+import com.example.pruebatecnicamerlin.util.MediaPlayerService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
@@ -52,7 +53,10 @@ public class PodcastDetailFragment extends Fragment implements PodcastDetailInte
     private boolean isPodcastFavorite;
 
     private SharedPreferences sharedPreferences;
+    private MediaPlayer  mp = new MediaPlayerService().getMp();;
+    private boolean isTrackPaused = false;
 
+    private int lastPosition = -1;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -142,7 +146,15 @@ public class PodcastDetailFragment extends Fragment implements PodcastDetailInte
         return binding.getRoot();
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //Para que no se siga reproduciendo cuando vamos atras
+        //todo si queremos seguir reproduciendod espues de cerrar la vista quitar este código
+        if(mp != null){
+            mp.release();
+        }
+    }
     @Override
     public void getCountTracks(int countTracks) {
 
@@ -150,14 +162,67 @@ public class PodcastDetailFragment extends Fragment implements PodcastDetailInte
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //Para que no se siga reproduciendo cuando vamos atras
-        //todo si queremos seguir reproduciendod espues de cerrar la vista quitar este código
-        /*if(mp != null){
-            mp.release();
-        }*/
+    public void mediaPlayerTrackHandler(String url, int position, ImageButton btnPlayTrack) {
+        if(url != null){
+
+            Uri uri = Uri.parse(url);
+
+
+            if(mp == null){
+                mp = new MediaPlayer();
+
+            }
+
+
+            if(!mp.isPlaying()){
+
+                /*Picasso.get()
+                        .load(R.drawable.ic_pause)
+                        .into(imageButton);*/
+
+                Log.d("TAG", "onClick: start mp");
+
+
+                if(lastPosition != position && lastPosition != -1 || !isTrackPaused){
+                    mp.release();
+                    mp = MediaPlayer.create(btnPlayTrack.getContext(), uri);
+                    mp.start();
+                    isTrackPaused = false;
+
+                }else {
+                    mp.start();
+                }
+
+
+            }else {
+                Log.d("TAG", "onClick: pause mp");
+                /*Picasso.get()
+                        .load(R.drawable.play)
+                        .into(imageButton);*/
+
+                if(lastPosition != position && lastPosition != -1){
+                    mp.release();
+                    mp = MediaPlayer.create(btnPlayTrack.getContext(), uri);
+                    mp.start();
+                    isTrackPaused = false;
+                }else {
+                    mp.pause();
+                    isTrackPaused = true;
+                }
+
+
+
+
+            }
+
+            lastPosition = position;
+
+        }else {
+            Toast.makeText(btnPlayTrack.getContext(), "Ups! No track available...", Toast.LENGTH_SHORT).show();
+        }
     }
+
+
 
 
     private void loadData(String id) {
