@@ -126,7 +126,7 @@ public class FavoritePodcastViewModel extends ViewModel implements Callback<Podc
             listMutableLiveData.getValue()
         }*/
 
-        if(!listMutableLiveData.getValue().equals(favoriteArrayList)){
+        if(null != listMutableLiveData && !listMutableLiveData.getValue().equals(favoriteArrayList)){
             this.listMutableLiveData.setValue(favoriteArrayList);
 
         }

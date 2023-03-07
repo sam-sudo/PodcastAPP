@@ -63,6 +63,7 @@
             app:boxStrokeColor="@color/mainButton"
             android:textColor="@color/white"
             android:hint="search"
+            android:textColorHint="@color/white"
             app:hintTextColor="@color/mainLightText"
             app:boxBackgroundColor="@color/mainBackground"
             app:boxStrokeWidth="2dp"
@@ -70,6 +71,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/iedt_searchTopPodcast"
 
+                android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:maxLines="1"
                 android:layout_width="match_parent"
