@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 
 public interface PodcastApiService {
 
-    @GET("/us/rss/toppodcasts/limit=40/genre=1310/json")
+    @GET("/us/rss/toppodcasts/limit=100/genre=1310/json")
     Call<PodcastListResponse> getPodcasts();
 
     @GET("https://itunes.apple.com/lookup")

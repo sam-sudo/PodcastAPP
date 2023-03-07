@@ -69,7 +69,9 @@ public class PodcastViewModel extends ViewModel implements Callback<PodcastListR
 
     public ArrayList<String> getTypeOfGenders(ArrayList<PodcastResponse> arrayList){
 
-
+        if(!genders.contains("All")){
+            genders.add("All");
+        }
 
         for(PodcastResponse podcastResponse : arrayList){
             String gender = podcastResponse.getCategory().getAttributes().getTerm();
@@ -117,6 +119,11 @@ public class PodcastViewModel extends ViewModel implements Callback<PodcastListR
     public void updateListByGender(String param){
 
         ArrayList<PodcastResponse> podcastResponseList = new ArrayList<>();
+
+        if(param.equals("All")){
+            listMutableLiveData.setValue(podcastResponseArrayList);
+            return;
+        }
 
         if(param.length() > 0){
             for(PodcastResponse podcastResponse : podcastResponseArrayList){

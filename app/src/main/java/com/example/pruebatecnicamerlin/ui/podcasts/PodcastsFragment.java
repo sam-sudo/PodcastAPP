@@ -92,6 +92,8 @@ public class PodcastsFragment extends Fragment implements PodcastInterface, Podc
             public void onChanged(ArrayList arrayList) {
                 mPodcastAdapter.submitList(arrayList);
 
+
+
                 ArrayList<String> uniqueGenderList = podcastViewModel.getTypeOfGenders(podcastViewModel.getList().getValue());
                 if( uniqueGenderList.size() != podcastViewModel.getGendersSize() ){
 
