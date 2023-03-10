@@ -23,7 +23,7 @@ import retrofit2.Response;
 
 public class FavoritePodcastViewModel extends ViewModel implements Callback<PodcastListResponse> {
 
-    private MutableLiveData<ArrayList<PodcastResponse>> listMutableLiveData;
+    private MutableLiveData<ArrayList<PodcastResponse>> listMutableLiveData = new MutableLiveData<>();
     private ArrayList<PodcastResponse> podcastRealArrayList = new ArrayList<>();
 
     private SharedPreferences sharedPreferences;
@@ -126,10 +126,15 @@ public class FavoritePodcastViewModel extends ViewModel implements Callback<Podc
             listMutableLiveData.getValue()
         }*/
 
-        if(null != listMutableLiveData && !listMutableLiveData.getValue().equals(favoriteArrayList)){
-            this.listMutableLiveData.setValue(favoriteArrayList);
+        if(null != listMutableLiveData.getValue() && listMutableLiveData.getValue().size() > 0){
+
+            if(!listMutableLiveData.getValue().equals(favoriteArrayList)){
+                this.listMutableLiveData.setValue(favoriteArrayList);
+
+            }
 
         }
+
 
 
 
