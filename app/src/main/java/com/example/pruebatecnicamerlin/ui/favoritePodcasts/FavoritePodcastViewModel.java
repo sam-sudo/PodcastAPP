@@ -79,8 +79,14 @@ public class FavoritePodcastViewModel extends ViewModel implements Callback<Podc
 
             }*/
 
+            if(podcastRealArrayList.size() <=0 || !listMutableLiveData.getValue().equals(favoritePodcast)){
+                Log.d("EQUALS", "refreshFavoriteArrayList: NOT EQUALS");
+                listMutableLiveData.setValue(favoritePodcast);
+
+            }
+
             podcastRealArrayList = favoritePodcast;
-            listMutableLiveData.setValue(favoritePodcast);
+            //listMutableLiveData.setValue(favoritePodcast);
 
         }
     }
@@ -129,9 +135,12 @@ public class FavoritePodcastViewModel extends ViewModel implements Callback<Podc
         if(null != listMutableLiveData.getValue() && listMutableLiveData.getValue().size() > 0){
 
             if(!listMutableLiveData.getValue().equals(favoriteArrayList)){
+                Log.d("EQUALS", "refreshFavoriteArrayList: 1 NOT EQUALS");
                 this.listMutableLiveData.setValue(favoriteArrayList);
 
             }
+
+            Log.d("EQUALS", "refreshFavoriteArrayList: 1 EQUALS");
 
         }
 

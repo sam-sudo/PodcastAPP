@@ -27,7 +27,14 @@ public class PodcastViewModel extends ViewModel implements Callback<PodcastListR
         if(listMutableLiveData == null){
             listMutableLiveData = new MutableLiveData<>();
             initTempList();
+        }else {
+            if(null == listMutableLiveData.getValue() || listMutableLiveData.getValue().size() <= 0){
+                initTempList();
+            }
         }
+
+
+
         return listMutableLiveData;
     }
 

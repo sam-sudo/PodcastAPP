@@ -1,5 +1,8 @@
 package com.example.pruebatecnicamerlin.ui.podcasts;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,6 +34,7 @@ import com.example.pruebatecnicamerlin.ui.podcasts.adapters.PodcastAdapter;
 import com.example.pruebatecnicamerlin.ui.podcasts.adapters.PodcastGenderAdapter;
 import com.example.pruebatecnicamerlin.ui.podcasts.interfaces.PodcastGenderInterface;
 import com.example.pruebatecnicamerlin.ui.podcasts.interfaces.PodcastInterface;
+import com.example.pruebatecnicamerlin.util.NetworkUtil;
 
 import java.util.ArrayList;
 
@@ -43,12 +48,16 @@ public class PodcastsFragment extends Fragment implements PodcastInterface, Podc
     PodcastGenderAdapter podcastGenderAdapter;
     String imgTrack ;
 
+    private AlertDialog alertDialog;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
 
         binding = FragmentPodcastsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+
 
         podcastViewModel = new ViewModelProvider(this).get(PodcastViewModel.class);
 
@@ -58,6 +67,37 @@ public class PodcastsFragment extends Fragment implements PodcastInterface, Podc
         RecyclerView listView = binding.recyclerViewGenders;
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
+
+        //Wait data or connection Dialog
+        int status = NetworkUtil.getConnectivityStatusString(getContext());
+        if(status == 0){
+            AlertDialog.Builder alerBuilder = new AlertDialog.Builder(getContext());
+            alerBuilder.setMessage("No connection, try when you have it");
+            alerBuilder.setNeutralButton( "Try again", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //with overWriting this not close dialog
+                }
+            });
+
+            alertDialog = alerBuilder.create();
+            alertDialog.show();
+            alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("TAG", "onClick: dialg");
+                    int status = NetworkUtil.getConnectivityStatusString(getContext());
+                    if(status == 1){
+                        Log.d("TAG", "onClick: updating list");
+                        podcastViewModel.getList();
+                        alertDialog.dismiss();
+                    }
+
+                    Log.d("TAG", "onClick status: " + status);
+                }
+            });
+        }
+
 
 
         mPodcastAdapter = new PodcastAdapter(new DiffUtil.ItemCallback<PodcastResponse>() {
@@ -130,13 +170,6 @@ public class PodcastsFragment extends Fragment implements PodcastInterface, Podc
     }
 
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -144,6 +177,14 @@ public class PodcastsFragment extends Fragment implements PodcastInterface, Podc
             binding.iedtSearchTopPodcast.setText("");
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+
 
     @Override
     public void onClick(int position) {

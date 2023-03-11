@@ -38,19 +38,6 @@ public class PodcastResponse {
         this.category = category;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PodcastResponse that = (PodcastResponse) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
     public Name getName() {
         return name;
     }
@@ -114,6 +101,19 @@ public class PodcastResponse {
 
     public Category getCategory() {
         return category;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PodcastResponse)) return false;
+        PodcastResponse that = (PodcastResponse) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public void setCategory(Category category) {
@@ -234,6 +234,19 @@ public class PodcastResponse {
                     '}';
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Id)) return false;
+            Id id = (Id) o;
+            return Objects.equals(attributes, id.attributes);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(attributes);
+        }
+
         public class Attributes{
             @SerializedName("im:id")
             private String id;
@@ -255,6 +268,19 @@ public class PodcastResponse {
                 return "Attributes{" +
                         "id='" + id + '\'' +
                         '}';
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o) return true;
+                if (!(o instanceof Attributes)) return false;
+                Attributes that = (Attributes) o;
+                return Objects.equals(id, that.id);
+            }
+
+            @Override
+            public int hashCode() {
+                return Objects.hash(id);
             }
         }
     }
